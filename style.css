@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, serif;
+}
+
+.wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 5px 0 black;
+  border-radius: 5px;
+  margin-top: 25px;
+  width: 1024px;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  margin: 25px;
+}
+
+form input {
+  border: 0;
+  border-bottom: 2px solid #666;
+  font-size: 18px;
+  outline: none;
+}
+
+form input:focus {
+  border-color: black;
+}
+
+form input::placeholder {
+  color: #999;
+}
+
+form button {
+  padding: 5px;
+  cursor: pointer;
+}
+
+p {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.p-not-completed {
+  color: red;
+}
+
+.p-completed {
+  color: green;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  margin: 20px;
+  box-shadow: 0 0 5px 0 black;
+  border-radius: 5px;
+  font-size: 21px;
+}
+
+i {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.checkbox {
+  cursor: pointer;
+  margin: 5px;
+}
+
+.ul-not-completed li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.checkbox {
+  margin: 0 15px 0 10px;
+}
+
+.right {
+  margin-right: 10px;
+}
