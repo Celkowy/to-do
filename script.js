@@ -6,7 +6,6 @@ const ulNotCompleted = document.querySelector(".ul-not-completed")
 const ulCompleted = document.querySelector(".ul-completed")
 const counter = document.querySelector('.counter')
 
-
 const addTodo = (e) => {
   e.preventDefault();
   if(input.value === "") return
@@ -17,9 +16,6 @@ const addTodo = (e) => {
   const remove = newTodo.querySelector('.fa-check-square');
   remove.addEventListener('click', removeTodo)
   updateOrder()
-  updateTable()
-  updateCompletedLiIndexes()
-  deleteFromCompletedUl()
   input.value = ""
 }
 
@@ -32,14 +28,12 @@ const removeTodo = (e) => {
   e.target.parentNode.parentNode.classList.add('skip')
   const del = e.target.parentNode.parentNode;
   del.remove()
+  e.target.removeEventListener('click', removeTodo)
   notCompletedTodos.splice(del.dataset.key,1)
   completedTodos.push(e.target.parentNode.parentNode)
   updateOrder()
-  updateTable()
-  updateCompletedTable()
-  deleteFromCompletedUl()
-  updateCompletedLiIndexes()
-
+  displayCompletedUl()
+  trashess()
 }
 
 const updateTable = () => {
@@ -58,52 +52,24 @@ const updateOrder = () => {
   })
 }
 
-
-const updateCompletedTable = () => {
-  completedTodos.forEach(element => {
+const displayCompletedUl = () => {
+  ulCompleted.textContent = ""
+  completedTodos.forEach((element, index) => {
+    element.dataset.key = index;
     ulCompleted.appendChild(element)
   })
 }
 
-const deleteFromCompletedUl = () => {
-  let listOfDeleteElements = [...document.querySelectorAll('.delete')]
-  listOfDeleteElements.forEach((element, index) => {
-   element.dataset.key = index;
+const trashess = () => {
+  let trashes = [...document.querySelectorAll('.delete')];
+
+  trashes.forEach((trash, index) => {
+    trash.addEventListener('click', () => {
+      trash.parentNode.parentNode.remove();
+      console.log(index);
+      completedTodos.splice(index, 1)
+    })
   })
-
-  //  ulCompleted.textContent = ""
-  //   completedTodos.forEach((element, index) => {
-  //   element.dataset.key = index;
-  //   ulCompleted.appendChild(element)
-  // })
-
-  // listOfDeleteElements.forEach(element => {
-  //   element.addEventListener('click', () => {
-  //     completedTodos.forEach(todo => {
-  //     updateCompletedLiIndexes()
-        
-  //       console.log(todo, element);
-  //       if(todo.dataset.key == element.dataset.key){
-  //         console.log(todo.dataset.key);
-  //         completedTodos.splice(todo.dataset.key, 1)
-  //         console.log(todo);
-  //         todo.remove()
-  //       }
-  //     })
-  //   })
-  // })
-
 }
-
-
-const updateCompletedLiIndexes = () => {
-  completedTodos.forEach((element, index) => {
-  element.dataset.key = index;
-  console.log(element);
-})
-
-}
-
-
 
 form.addEventListener('submit', addTodo)
