@@ -80,6 +80,11 @@ h1 {
   display: none;
 }
 
+i {
+  padding: 5px;
+  cursor: pointer;
+}
+
 i.hide {
   display: none;
 }
@@ -118,11 +123,6 @@ li {
   border-radius: 5px;
   font-size: 21px;
   padding: 5px;
-}
-
-i {
-  padding: 5px;
-  cursor: pointer;
 }
 
 .left {
