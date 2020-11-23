@@ -11,13 +11,11 @@ body {
 }
 
 .wrapper {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   box-shadow: 0 0 5px 0 black;
   border-radius: 5px;
-  margin-top: 25px;
+  margin: 25px auto 25px;
   width: 1024px;
+  overflow: hidden;
 }
 
 .top {
