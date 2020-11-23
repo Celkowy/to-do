@@ -27,8 +27,12 @@ body {
   align-items: center;
 }
 
+form input {
+  width: 350px;
+}
+
 form {
-  margin: 25px;
+  margin-top: 25px;
 }
 
 input {
@@ -39,7 +43,7 @@ input {
 }
 
 input:focus {
-  border-color: black;
+  border-color: lightblue;
 }
 
 form input::placeholder {
@@ -54,6 +58,7 @@ form button {
   box-shadow: 0 0 5px 0 black;
   border-radius: 5px;
   background-color: white;
+  margin-left: 5px;
 }
 
 h1 {
