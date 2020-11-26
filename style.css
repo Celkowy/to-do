@@ -92,6 +92,14 @@ i.hide {
   display: none;
 }
 
+.change {
+  width: 350px;
+}
+
+.no-margin {
+  margin-top: 0;
+}
+
 .left.line-through {
   text-decoration: line-through;
 }

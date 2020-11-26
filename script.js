@@ -2,6 +2,7 @@ const notCompletedTodos = [];
 const completedTodos = [];
 const input = document.querySelector('form input')
 const form = document.querySelector('form')
+const searchForm = document.querySelector('.search')
 const ulNotCompleted = document.querySelector(".ul-not-completed")
 const ulCompleted = document.querySelector(".ul-completed")
 const counter = document.querySelector('.counter')
@@ -24,7 +25,7 @@ const addTodo = (e) => {
     addCheck.style.display ="none"
 
     const changeValue = newTodo.querySelector('.value')
-    changeValue.innerHTML = `${changeValue.textContent} <input type="text" class="change"><i class="fas fa-check change-me">`
+    changeValue.innerHTML = `<input type="text" class="change" value="${changeValue.textContent}"><i class="fas fa-check change-me">`
 
     const inputChangeValue = newTodo.querySelector('.change')
 
@@ -34,7 +35,6 @@ const addTodo = (e) => {
       changeValue.innerHTML = `${inputChangeValue.value}`
       addCheck.style.display ="inline"
     })
-
   })
 
   const remove = newTodo.querySelector('.fa-check-square');
@@ -67,6 +67,14 @@ const removeTodo = (e) => {
   })
 }
 
+const searchTask = (e) => {
+  let notCompletedLis = notCompletedTodos;
+  const searchText = e.target.value.toLowerCase();
+  notCompletedLis = notCompletedLis.filter(li => li.textContent.toLowerCase().includes(searchText))
+  ulNotCompleted.textContent = ""
+  notCompletedLis.forEach(li => ulNotCompleted.appendChild(li))
+}
+
 const updateCounter = () => {
   counter.textContent = notCompletedTodos.length
 }
@@ -86,3 +94,4 @@ const displayCompletedUl = () => {
 }
 
 form.addEventListener('submit', addTodo)
+searchForm.addEventListener('input', searchTask)
