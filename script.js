@@ -10,12 +10,32 @@ const addTodo = (e) => {
   e.preventDefault();
 
   if(input.value === "") return
-
   const newTodo = document.createElement("li")
-  newTodo.innerHTML = `<div class="left"><span class="index"></span>${input.value}</div><div class="right"><i class="fas fa-edit"></i><i class="far fa-check-square"></i></div>`;
+  newTodo.innerHTML = `<div class="left"><span class="index"></span><div class="value">${input.value}</div></div><div class="right"><i class="fas fa-edit"></i><i class="far fa-check-square"></i></div>`;
 
   ulNotCompleted.appendChild(newTodo)
   notCompletedTodos.push(newTodo)
+
+  const edit = newTodo.querySelector('.fa-edit');
+
+  edit.addEventListener('click', () => {
+
+    const addCheck = newTodo.querySelector('.right');
+    addCheck.style.display ="none"
+
+    const changeValue = newTodo.querySelector('.value')
+    changeValue.innerHTML = `${changeValue.textContent} <input type="text" class="change"><i class="fas fa-check change-me">`
+
+    const inputChangeValue = newTodo.querySelector('.change')
+
+    const changeMe = document.querySelector('.change-me');
+
+    changeMe.addEventListener('click', () => {
+      changeValue.innerHTML = `${inputChangeValue.value}`
+      addCheck.style.display ="inline"
+    })
+
+  })
 
   const remove = newTodo.querySelector('.fa-check-square');
   remove.addEventListener('click', removeTodo)
@@ -27,7 +47,7 @@ const addTodo = (e) => {
 
 const removeTodo = (e) => {
   e.target.parentNode.previousSibling.childNodes[0].classList.add('hide')
-  e.target.parentNode.childNodes[0].classList.add('hide')
+  e.target.previousSibling.classList.add('hide')
   e.target.parentNode.previousSibling.classList.add('line-through')
   e.target.className = "fas fa-trash delete"
 
