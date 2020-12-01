@@ -70,7 +70,7 @@ const removeTodo = (e) => {
 const searchTask = (e) => {
   let notCompletedLis = notCompletedTodos;
   const searchText = e.target.value.toLowerCase();
-  notCompletedLis = notCompletedLis.filter(li => li.textContent.toLowerCase().includes(searchText))
+  notCompletedLis = notCompletedLis.filter(li => li.childNodes[0].childNodes[1].textContent.toLowerCase().includes(searchText))
   ulNotCompleted.textContent = ""
   notCompletedLis.forEach(li => ulNotCompleted.appendChild(li))
 }
