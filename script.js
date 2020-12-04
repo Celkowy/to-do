@@ -1,65 +1,35 @@
-const notCompletedTodos = [];
-const completedTodos = [];
+let todos = [];
+let len = 0;
+
 const input = document.querySelector('form input')
 const form = document.querySelector('form')
 const searchForm = document.querySelector('.search')
-const ulNotCompleted = document.querySelector(".ul-not-completed")
-const ulCompleted = document.querySelector(".ul-completed")
+const todoList$ = document.getElementById("todo-list")
+const doneList$ = document.getElementById("done-list")
 const counter = document.querySelector('.counter')
 
 const addTodo = (e) => {
   e.preventDefault();
 
   if(input.value === "") return
-  const newTodo = document.createElement("li")
-  newTodo.innerHTML = `<div class="left"><span class="index"></span><div class="value">${input.value}</div></div><div class="right"><i class="fas fa-edit"></i><i class="far fa-check-square"></i></div>`;
 
-  ulNotCompleted.appendChild(newTodo)
-  notCompletedTodos.push(newTodo)
+  todos.push({id: len++ ,name: input.value, completed: false, show: true});
 
-  const edit = newTodo.querySelector('.fa-edit');
+  render();
 
-  edit.addEventListener('click', () => {
-
-    const addCheck = newTodo.querySelector('.right');
-    addCheck.style.display ="none"
-
-    const changeValue = newTodo.querySelector('.value')
-    changeValue.innerHTML = `<input type="text" class="change" value="${changeValue.textContent}"><i class="fas fa-check change-me">`
-
-    const inputChangeValue = newTodo.querySelector('.change')
-
-    const changeMe = document.querySelector('.change-me');
-
-    changeMe.addEventListener('click', () => {
-      changeValue.innerHTML = `${inputChangeValue.value}`
-      addCheck.style.display ="inline"
-    })
-  })
-
-  const remove = newTodo.querySelector('.fa-check-square');
-  remove.addEventListener('click', removeTodo)
-
-  updateOrder()
-  updateCounter()
   input.value = ""
+  
 }
 
 const removeTodo = (e) => {
-  e.target.parentNode.previousSibling.childNodes[0].classList.add('hide')
-  e.target.previousSibling.classList.add('hide')
-  e.target.parentNode.previousSibling.classList.add('line-through')
-  e.target.className = "fas fa-trash delete"
 
-  const del = e.target.parentNode.parentNode;
-  del.remove()
-  notCompletedTodos.splice(del.dataset.key,1)
-  completedTodos.push(e.target.parentNode.parentNode)
-  updateOrder()
-  displayCompletedUl()
-  updateCounter()
+  console.log(e.target.dataset.id)
+  todos.filter(el => el.id == e.target.dataset.id)[0].completed = true;
+  
 
   e.target.removeEventListener('click', removeTodo)
+
+  render();
 
   e.target.addEventListener('click', () => {
     e.target.parentNode.parentNode.remove()
@@ -68,29 +38,76 @@ const removeTodo = (e) => {
 }
 
 const searchTask = (e) => {
-  let notCompletedLis = notCompletedTodos;
   const searchText = e.target.value.toLowerCase();
-  notCompletedLis = notCompletedLis.filter(li => li.childNodes[0].childNodes[1].textContent.toLowerCase().includes(searchText))
-  ulNotCompleted.textContent = ""
-  notCompletedLis.forEach(li => ulNotCompleted.appendChild(li))
+  todos = todos.map( t=> { 
+    if(t.name.includes(searchText)){
+      t.show = true
+    }else {
+      t.show = false;
+    }
+    return t;
+  })
+ render();   
 }
 
 const updateCounter = () => {
-  counter.textContent = notCompletedTodos.length
+  counter.textContent = todos.filter( el => !el.completed).length;
 }
 
-const updateOrder = () => {
-  let allnotCompletedLi = [...document.querySelectorAll('.index')]
-  allnotCompletedLi.forEach((element, index) => {
-    element.textContent = index + 1
+function render() {
+
+  updateCounter();
+  
+  //todo list
+  todoList$.innerHTML = '';
+  todos.filter(task=> !task.completed && task.show ).forEach( (task, index) => {
+    todoList$.appendChild( generateItem(task, index+1) );
+  })
+  //done list
+  doneList$.innerHTML = '';
+  todos.filter(task=> task.completed ).forEach( (task, index) => {
+    doneList$.appendChild(generateItem(task, index+1));
   })
 }
 
-const displayCompletedUl = () => {
-  ulCompleted.textContent = ""
-  completedTodos.forEach(element => {
-    ulCompleted.appendChild(element)
-  })
+function generateItem(task , index) {
+  let newTodo = document.createElement('li');
+  newTodo.innerHTML =  `<div class="left ${task.completed ? 'line-through': ''}"><span class="index ${task.completed ? 'hide': ''}">\
+  ${index}</span><div class="value">${task.name}</div>\
+  </div><div class="right"><i class="fas fa-edit ${task.completed ? 'hide': ''}">\
+  </i><i class="${ task.completed ? 'fas fa-trash delete' : 'far fa-check-square'}"></i></div>`
+  
+  if (!task.completed) {
+    newTodo.querySelector('.fa-edit').addEventListener('click', () => {
+      const addCheck = newTodo.querySelector('.right');
+      addCheck.style.display ="none"
+  
+      const changeValue = newTodo.querySelector('.value')
+      changeValue.innerHTML = `<input type="text" class="change" value="${changeValue.textContent}"><i class="fas fa-check change-me">`
+  
+      const inputChangeValue = newTodo.querySelector('.change')
+  
+      const changeMe = document.querySelector('.change-me');
+  
+      changeMe.addEventListener('click', () => {
+        changeValue.innerHTML = `${inputChangeValue.value}`
+        addCheck.style.display ="inline"
+      })
+    })
+
+    const remove = newTodo.querySelector('.fa-check-square');
+    remove.dataset.id = task.id ;
+    remove.addEventListener('click', removeTodo);
+  } else {
+    newTodo.querySelector('.fa-trash').addEventListener('click', () => {
+      todos = todos.filter( item => item.id != task.id);
+      render();
+    })
+    
+  }
+
+    
+  return newTodo;
 }
 
 form.addEventListener('submit', addTodo)
