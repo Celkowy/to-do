@@ -23,7 +23,6 @@ const addTodo = (e) => {
 
 const removeTodo = (e) => {
 
-  console.log(e.target.dataset.id)
   todos.filter(el => el.id == e.target.dataset.id)[0].completed = true;
   
 
